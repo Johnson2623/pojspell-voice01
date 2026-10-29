@@ -606,6 +606,54 @@
   }
 }
 
+
+/* 經卷和功能模式分成兩列，每列三個等寬欄位（手機與電腦皆適用） */
+.book-control-bar, .mode-control-bar { box-sizing:border-box; width:100%; }
+.book-control-bar .nav-three-columns, .mode-control-bar .nav-three-columns {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  width:100%; gap:6px;
+}
+.book-control-bar .nav-three-columns > button, .mode-control-bar .nav-three-columns > button {
+  box-sizing:border-box; width:100%; min-width:0 !important; max-width:100%;
+  overflow-wrap:anywhere; white-space:normal;
+}
+@media (max-width:600px) {
+  .book-control-bar, .mode-control-bar { padding:5px 5px; }
+  .book-control-bar .nav-three-columns, .mode-control-bar .nav-three-columns { gap:5px; }
+}
+
+/* 互動閃卡專用兩列配置：不影響測驗和詞庫總覽 */
+#view-card .fc-action-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; width:100%; margin-bottom:7px; }
+#view-card .fc-action-row > button { min-width:0; width:100%; box-sizing:border-box; white-space:normal; overflow-wrap:anywhere; padding-left:3px; padding-right:3px; }
+#view-card .fc-meta-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px; width:100%; margin-bottom:10px; align-items:stretch; }
+#view-card .fc-meta-row .verse-tag { grid-column:auto; display:flex; align-items:center; justify-content:center; min-width:0; width:100%; box-sizing:border-box; margin:0; text-align:center; overflow-wrap:anywhere; }
+#view-card .fc-meta-row .filter-group { display:flex; flex-flow:row nowrap; align-items:center; justify-content:center; gap:3px; min-width:0; width:100%; box-sizing:border-box; margin:0; padding:5px 2px; }
+#view-card .fc-meta-row .filter-group label { white-space:nowrap; flex:0 1 auto; font-size:clamp(12px,3.5vw,19px) !important; }
+#view-card .fc-meta-row .filter-group select { flex:0 1 70px; min-width:0; width:70px; max-width:70px; padding:5px 1px; box-sizing:border-box; font-size:clamp(12px,3.2vw,17px); }
+
+
+/* 互動閃卡：章節與速度標籤字型字級跟「隨機重洗牌」一致 */
+#view-card .fc-meta-row #fc-verse,
+#view-card .fc-meta-row .filter-group label {
+  font-family: inherit !important;
+  font-size: 1.148rem !important;
+  font-weight: 600 !important;
+  line-height: 1.25;
+}
+
+
+/* 辨識測驗：章節與速度標籤比照互動閃卡「隨機重洗牌」文字 */
+#view-quiz #qz-verse,
+#view-quiz .filter-group label {
+  font-family: inherit !important;
+  font-size: 1.148rem !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  line-height: 1.25 !important;
+  text-align: center;
+}
+#view-quiz .filter-group label { white-space: normal !important; }
 </style>
 </head>
 <body>
@@ -630,33 +678,38 @@
     </button>
   </div>
 
-  <!-- 第二列：靠左增加「馬可福音」、「羅馬書」、「何西阿書」三個欄位（寬度同詞庫總覽，底色與文字顏色同辨識測驗） -->
-  <div class="control-bar">
-    <div class="view-tabs">
+  <!-- 第二列：聖經經卷選擇，三欄等寬 -->
+  <div class="control-bar book-control-bar">
+    <div class="view-tabs nav-three-columns">
       <button class="book-tab" id="btab-mark" onclick="setBibleBook('馬可福音')">馬可福音</button>
       <button class="book-tab" id="btab-romans" onclick="setBibleBook('羅馬書')">羅馬書</button>
       <button class="book-tab" id="btab-hosea" onclick="setBibleBook('何西阿書')">何西阿書</button>
+    </div>
+  </div>
+  <!-- 第三列：功能模式選擇，三欄等寬 -->
+  <div class="control-bar mode-control-bar">
+    <div class="view-tabs nav-three-columns">
       <button class="view-tab active" id="vtab-card" onclick="setViewMode('card')">互動閃卡</button>
       <button class="view-tab" id="vtab-quiz" onclick="setViewMode('quiz')">辨識測驗</button>
-      <button class="view-tab" id="vtab-grid" onclick="setViewMode('grid')" style="min-width:110px;">詞庫總覽</button>
+      <button class="view-tab" id="vtab-grid" onclick="setViewMode('grid')">詞庫總覽</button>
     </div>
   </div>
 
   <div class="workspace">
     <!-- VIEW 1: FLASHCARD -->
     <div id="view-card">
-      <!-- 第三列：左側切換按鈕與聖經出處章節 ＋ 最右側「調整速度」欄位 -->
-      <div class="status-row">
-        <div class="mini-btns">
-          <button class="mini-btn active" id="dir-h2p" onclick="setDirection('h2p')">漢字 ➔ 白話字</button>
-          <button class="mini-btn" id="dir-p2h" onclick="setDirection('p2h')">白話字 ➔ 漢字</button>
-          <button class="mini-btn" onclick="shuffleDeck()">隨機洗牌</button>
-          <span class="verse-tag" id="fc-verse">馬可福音 01:01</span>
-        </div>
-
+      <!-- 互動閃卡：三個操作按鈕等寬列 -->
+      <div class="fc-action-row">
+        <button class="mini-btn active" id="dir-h2p" onclick="setDirection('h2p')">漢字 ➔ 白話字</button>
+        <button class="mini-btn" id="dir-p2h" onclick="setDirection('p2h')">白話字 ➔ 漢字</button>
+        <button class="mini-btn" onclick="shuffleDeck()">隨機重洗牌</button>
+      </div>
+      <!-- 互動閃卡：動態經文章節與速度，各佔一半 -->
+      <div class="fc-meta-row">
+        <span class="verse-tag" id="fc-verse">馬可福音 01:01</span>
         <div class="filter-group">
-          <label style="font-size:0.84rem;font-weight:700;">調整速度：</label>
-          <select class="select-box speed-select" onchange="changeSpeed(this.value)">
+          <label for="fc-speed-select">調整速度：</label>
+          <select id="fc-speed-select" class="select-box speed-select" onchange="changeSpeed(this.value)">
             <option value="1">1秒</option>
             <option value="2">2秒</option>
             <option value="3" selected>3秒</option>
