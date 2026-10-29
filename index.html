@@ -582,6 +582,30 @@
 @media (min-width: 641px) {
   #view-grid .grid-overview-masks .mini-btn { font-size: 1.38rem; }
 }
+
+/* 指定欄位文字與第二列「辨識測驗」／「詞庫總覽」分頁同字型、同尺寸。 */
+#view-quiz .quiz-reshuffle,
+#view-quiz #qz-verse,
+#view-quiz .filter-group label,
+#view-grid .grid-overview-top .filter-group label {
+  font-family: inherit !important;
+  font-size: 1.204rem !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.2;
+}
+#view-quiz .filter-group label,
+#view-grid .grid-overview-top .filter-group label { white-space:normal; text-align:center; }
+@media (max-width: 600px) {
+  #view-quiz .quiz-reshuffle,
+  #view-quiz #qz-verse,
+  #view-quiz .filter-group label,
+  #view-grid .grid-overview-top .filter-group label {
+    font-size: clamp(16.8px, 4.2vw, 19.6px) !important;
+    overflow-wrap:anywhere;
+  }
+}
+
 </style>
 </head>
 <body>
