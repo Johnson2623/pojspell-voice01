@@ -80,7 +80,7 @@
     gap: 2px;
   }
   .syl-btn .syl-title {
-    font-size: 0.92rem;
+    font-size: 1.38rem;
     font-weight: 700;
   }
   .syl-btn .syl-desc {
@@ -492,7 +492,7 @@
  .app-shell { width:100%; max-width:100%; min-width:0; border-radius:10px; }
  .syllable-bar { grid-template-columns:repeat(5,minmax(0,1fr)); gap:3px; padding:7px 5px; }
  .syl-btn { min-width:0; padding:8px 1px; border-width:1px; border-radius:7px; min-height:49px; }
- .syl-btn .syl-title { font-size:clamp(10px,2.65vw,13px); line-height:1.22; overflow-wrap:anywhere; }
+ .syl-btn .syl-title { font-size:clamp(15px,3.975vw,19.5px); line-height:1.22; overflow-wrap:anywhere; }
  .syl-btn .syl-desc { font-size:10px; }
  .control-bar { display:block; padding:7px 5px; }
  .view-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; width:100%; }
@@ -523,6 +523,35 @@
  button,select { touch-action:manipulation; }
 }
 
+
+/* 第二至第六列：欄位名稱較舊版放大 40%；第一列字級維持 */
+.control-bar .view-tab, .control-bar .book-tab { font-size: 1.204rem; }
+.workspace .mini-btn { font-size: 1.148rem; }
+.workspace .verse-tag, .workspace .progress-badge { font-size: 1.176rem; }
+.workspace .filter-group label { font-size: 1.176rem !important; }
+.workspace .select-box { font-size: 1.19rem; }
+.workspace button:not(.mini-btn):not(.q-opt) { font-size: 1.18rem; }
+/* iPhone 15 Plus：使用自動換行與適度留白，避免大字擠出畫面 */
+@media (max-width:600px) {
+ .view-tab,.book-tab,.view-tab[style] { font-size:clamp(16.8px,4.2vw,19.6px); overflow-wrap:anywhere; min-height:50px; padding:8px 2px; }
+ .mini-btn { font-size:clamp(15.4px,3.92vw,18.2px); min-height:49px; padding:8px 3px; overflow-wrap:anywhere; }
+ .workspace .verse-tag,.workspace .progress-badge { font-size:1.176rem; overflow-wrap:anywhere; }
+ .workspace .filter-group label { font-size:1.176rem !important; }
+ .workspace .select-box { font-size:19.6px; min-height:45px; }
+ .workspace button:not(.mini-btn):not(.q-opt) { overflow-wrap:anywhere; }
+}
+
+
+/* 辨識測驗：題數統計右側直接顯示重洗牌，不再獨占下一列 */
+#view-quiz .mini-btns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:stretch; column-gap:0; row-gap:6px; width:100%; }
+#view-quiz #qz-status { min-width:0; width:100%; box-sizing:border-box; white-space:normal; text-align:center; display:flex; align-items:center; justify-content:center; border-radius:7px 0 0 7px; }
+#view-quiz .quiz-reshuffle { min-width:0; width:100%; box-sizing:border-box; white-space:normal; padding-inline:5px; border-radius:0 7px 7px 0; }
+#view-quiz #qz-verse { grid-column:1 / -1; }
+@media(max-width:600px) {
+ #view-quiz .mini-btns { grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:0; row-gap:5px; }
+ #view-quiz #qz-status { padding:7px 3px; font-size:clamp(13px,3.6vw,16px); }
+ #view-quiz .quiz-reshuffle { font-size:clamp(14px,3.8vw,17px); min-height:44px; padding:6px 7px; }
+}
 </style>
 </head>
 <body>
@@ -534,16 +563,16 @@
       <span class="syl-title">全部音節</span>
     </button>
     <button class="syl-btn" id="syl-1" onclick="setSyllableFilter(1)">
-      <span class="syl-title">單音節字詞</span>
+      <span class="syl-title">單音節詞</span>
     </button>
     <button class="syl-btn" id="syl-2" onclick="setSyllableFilter(2)">
-      <span class="syl-title">雙音節字詞</span>
+      <span class="syl-title">雙音節詞</span>
     </button>
     <button class="syl-btn" id="syl-3" onclick="setSyllableFilter(3)">
-      <span class="syl-title">三音節字詞</span>
+      <span class="syl-title">三音節詞</span>
     </button>
     <button class="syl-btn" id="syl-48" onclick="setSyllableFilter('48')">
-      <span class="syl-title">第4,8音字詞</span>
+      <span class="syl-title">第4,8音詞</span>
     </button>
   </div>
 
@@ -608,8 +637,8 @@
       <div class="status-row">
         <div class="mini-btns">
           <span class="progress-badge" id="qz-status">題庫｜答對：0</span>
+          <button class="mini-btn quiz-reshuffle" onclick="resetQuiz()">測驗重洗牌</button>
           <span class="verse-tag" id="qz-verse">馬可福音 01:01</span>
-          <button class="mini-btn" onclick="resetQuiz()">洗牌測驗</button>
         </div>
 
         <div class="filter-group">
